@@ -25,10 +25,10 @@
 
 ```bash
 # CLAUDE
-git clone https://github.com/你的用户名/kejian-skill-zh.git ~/.claude/skills/kejian-skill-zh
+git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.claude/skills/kejian-skill-zh
 
 # CODEX
-git clone https://github.com/你的用户名/kejian-skill-zh.git ~/.agent/skills/kejian-skill-zh
+git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.agent/skills/kejian-skill-zh
 ```
 
 ### 方式二：通过 npx 安装（开发中）

@@ -25,10 +25,10 @@ Clone the entire project into your agent's skill directory:
 
 ```bash
 # CLAUDE
-git clone https://github.com/your-username/kejian-skill-zh.git ~/.claude/skills/kejian-skill-zh
+git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.claude/skills/kejian-skill-zh
 
 # CODEX
-git clone https://github.com/your-username/kejian-skill-zh.git ~/.agent/skills/kejian-skill-zh
+git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.agent/skills/kejian-skill-zh
 ```
 
 ### Option 2: Install via npx (work in progress)
