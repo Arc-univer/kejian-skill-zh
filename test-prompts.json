@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "帮我总结一下这个课件 @data/深度学习基础.md",
+    "expected": "输出包含概览、核心知识点、重点难点、实践要点的 Markdown 总结"
+  },
+  {
+    "id": 2,
+    "prompt": "这个 PDF 内容太多了，帮我提炼一下关键点 @data/机器学习算法.pdf",
+    "expected": "从 PDF 中提取关键内容，生成 Markdown 格式的知识点列表"
+  },
+  {
+    "id": 3,
+    "prompt": "我有个课件需要复习，帮我整理一下重点和易错点，要 PDF 版本 @data/数据结构与算法.md",
+    "expected": "生成 Markdown 总结，并尝试输出 PDF（需要 LaTeX 环境）"
+  }
+]
