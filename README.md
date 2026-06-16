@@ -19,7 +19,13 @@
 
 ## 安装
 
-### 方式一：手动安装
+### 方式一：通过 npx 安装
+
+```bash
+npx skills add Arc-univer/kejian-skill-zh --skill kejian-skill-zh
+```
+
+### 方式二：手动安装
 
 将整个项目文件夹复制到你的 agent 的 skill 目录下：
 
@@ -30,14 +36,6 @@ git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.claude/skills/kej
 # CODEX
 git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.agent/skills/kejian-skill-zh
 ```
-
-### 方式二：通过 npx 安装（开发中）
-
-```bash
-npx skills install kejian-skill-zh
-```
-
-> ⚠️ 此方式尚在开发中，敬请期待
 
 ## 快速开始
 
