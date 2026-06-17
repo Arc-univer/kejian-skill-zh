@@ -15,7 +15,7 @@ English | **[中文](README.md)**
 - **`Summary - <filename>.md`** — A structured Markdown review document (default)
 - **`Summary - <filename>.pdf`** — A compiled PDF (optional, requires LaTeX)
 
-The output is **exam-oriented**, not a generic chapter summary. It distills: core concepts, formulas, representative worked examples, problem-solving techniques, and common pitfalls. Every single knowledge point includes a **clickable link that jumps to the exact line in the source file**.
+The output is **exam-oriented**, not a generic chapter summary. It distills: core concepts, formulas, representative worked examples, problem-solving techniques, and common pitfalls. Every single knowledge point includes a **clickable link that jumps to the relevant heading in the source file** (works in Obsidian, VS Code, and Typora).
 
 ---
 
@@ -23,9 +23,9 @@ The output is **exam-oriented**, not a generic chapter summary. It distills: cor
 
 | Feature | Details |
 |---------|---------|
-| **Precise line-level links** | Every reference links to the exact source line (`[pp. 1468](source.md#L256)`). Click → jump directly to the content. |
+| **Heading-anchor links** | Every reference shows the heading name and links to it (`[CPU Time Formula](source.md#cpu-time-formula) (pp. 1468)`). Click → jump directly. Works in Obsidian, VS Code, GitHub, and Typora. |
 | **Automatic chunking** | Long documents are intelligently split by lecture/topic, read section-by-section (parallel when possible), then merged globally. |
-| **Independent validation** | After merging, a fresh validator checks coverage, link clickability, line-anchor correctness, bilingual terms, and exam relevance. Fails → back to revision. |
+| **Independent validation** | After merging, a fresh validator checks coverage, link clickability, heading-anchor correctness, bilingual terms, and exam relevance. Fails → back to revision. |
 | **Bilingual terminology** | Primary language is Chinese; key technical terms are annotated with their original English names in parentheses (e.g., "指令集架构 (Instruction Set Architecture, ISA)"). |
 | **Math formula preservation** | Formulas use LaTeX syntax (`$...$` / `$$...$$`), rendered correctly in any math-capable Markdown viewer. |
 | **Multi-format input** | Markdown (preferred), plain text, PDF (direct reading or via Marker/Markitdown/Surya conversion). |
@@ -41,31 +41,31 @@ The output is **exam-oriented**, not a generic chapter summary. It distills: cor
 
 ## Core Concepts
 
-### CPU Time Formula [pp. 1468-1534](source.md#L256-L420)
+### CPU Time Formula → [CPU Time Formula](source.md#cpu-time-formula) (pp. 1468-1534)
 
-**Definition**: CPU Time = IC × CPI × T_c [pp. 1468](source.md#L256)
+**Definition**: CPU Time = IC × CPI × T_c → [CPU Time Formula](source.md#cpu-time-formula) (pp. 1468)
 
 **Formula**:
 $$CPU\ Time = IC \times CPI \times T_c$$
-*Source: [pp. 1470](source.md#L280)*
+*→ [CPU Time Formula](source.md#cpu-time-formula) (pp. 1470)*
 
-**Worked Example**: Given IC=10⁶, CPI=2.5, f=2GHz, compute CPU Time [pp. 1500](source.md#L350)
+**Worked Example**: Given IC=10⁶, CPI=2.5, f=2GHz → [CPI Factors & Optimization](source.md#cpi-factors-optimization) (pp. 1500)
 
 **Common Pitfalls**:
-- CPI is independent of clock frequency [pp. 1520](source.md#L400)
+- CPI is independent of clock frequency → [CPI Factors & Optimization](source.md#cpi-factors-optimization) (pp. 1520)
 
 ---
 
 ## Exam Key Points
 
-| Priority | Topic | Page (click to jump to source line) |
-|----------|-------|-------------------------------------|
-| 🔴 **Must-know** | CPU Time formula & comprehensive calculation | [pp. 1468-1534](source.md#L256-L420) |
-| ⚡ **Important** | CPI — meaning, factors, optimization | [pp. 1476-1518](source.md#L435-L510) |
-| 📌 **Understand** | Instruction execution cycle | [pp. 754-782](source.md#L180-L245) |
+| Priority | Topic | Source (click to jump) |
+|----------|-------|------------------------|
+| 🔴 **Must-know** | CPU Time formula & comprehensive calculation | [CPU Time Formula](source.md#cpu-time-formula) (pp. 1468-1534) |
+| ⚡ **Important** | CPI — meaning, factors, optimization | [CPI Factors & Optimization](source.md#cpi-factors-optimization) (pp. 1476-1518) |
+| 📌 **Understand** | Instruction execution cycle | [Instruction Execution Cycle](source.md#instruction-execution-cycle) (pp. 754-782) |
 ```
 
-> **Click any `pp.` link to jump directly to the starting line of that content in the source file.** No more scrolling through hundreds of lines hunting for a concept.
+> **Link text shows the target heading — you know exactly where you're jumping.** Parenthetical `pp.` are original slide numbers. Heading anchors work in **all Markdown viewers** (Obsidian, VS Code, GitHub, Typora). The `→` is a "see source" visual separator.
 
 ---
 
@@ -86,8 +86,8 @@ $$CPU\ Time = IC \times CPI \times T_c$$
 ### Key Roles
 
 - **Controller** — performs a global read of the entire document, builds a section map, delegates to readers, merges draft, normalizes style, and reports results
-- **Section Reader** — one per independent lecture block or topic chunk; returns structured notes (key points, formulas, **line numbers**, English terms); never writes the final document
-- **Validator** — a fresh-context reviewer that checks coverage, verifies every page link is clickable with correct line anchors, audits bilingual terminology, and assesses exam utility. Returns `Pass` / `Pass with notes` / `Fail`
+- **Section Reader** — one per independent lecture block or topic chunk; returns structured notes (key points, formulas, **heading anchors**, English terms); never writes the final document
+- **Validator** — a fresh-context reviewer that checks coverage, verifies every page link is clickable with correct heading anchors, audits bilingual terminology, and assesses exam utility. Returns `Pass` / `Pass with notes` / `Fail`
 
 ---
 
@@ -118,10 +118,10 @@ git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.agent/skills/keji
 ```
 User: "Summarize 'Computer Systems Overview' — exam key points only"
       ↓
-Skill auto: global read → chunk → per-section extract (with line numbers)
+Skill auto: global read → chunk → per-section extract (with heading anchors)
             → merge → validate → write file
       ↓
-Output: Summary - Computer Systems Overview.md (every point links to source lines)
+Output: Summary - Computer Systems Overview.md (every point links to source headings)
 ```
 
 ### Path 2: Without any conversion tool
@@ -133,7 +133,7 @@ Output: Summary - Computer Systems Overview.md (every point links to source line
 
 1. Download [SKILL.md](SKILL.md)
 2. Feed the courseware + SKILL.md to a web-based AI (Claude / ChatGPT / Gemini)
-3. Receive a text summary (same structure, no line-anchor navigation)
+3. Receive a text summary (same structure, no heading-anchor navigation)
 
 ---
 
@@ -159,7 +159,7 @@ Output: Summary - Computer Systems Overview.md (every point links to source line
 | [Typora](https://typora.io/) | ✅ | ✅ | All | WYSIWYG (paid) |
 | [Mark Text](https://github.com/marktext/marktext) | ✅ | ✅ | All | Free & open-source |
 
-> **Obsidian and VS Code natively support `#L<line>` anchor navigation** — clicking a page-reference link jumps straight to the matching line in the source file.
+> **Obsidian, VS Code, and GitHub all support heading-anchor navigation** (`#heading-slug`) — clicking a page-reference link jumps to the relevant heading in the source file.
 
 ### LaTeX Environment (Optional — PDF output only)
 
@@ -236,7 +236,7 @@ No. The skill enforces mandatory chunking: long documents must be split by lectu
 | Plain AI Summary | This Skill |
 |------------------|------------|
 | One-pass read; later sections tend to drift | Enforced chunking + independent validation |
-| Page references often missing or inaccurate | Every knowledge point has a precise line-number link |
+| Page references often missing or inaccurate | Every knowledge point has a heading-name link + page reference, works in all viewers |
 | May produce vague prose summaries | Structured key-point output with priority tags + pitfalls |
 | English terminology often dropped | Bilingual terms are a mandatory deliverable |
 | Single conversation round | Multi-round validation until passing, then file write |
@@ -248,7 +248,7 @@ No. The skill enforces mandatory chunking: long documents must be split by lectu
 ## Design Principles
 
 1. **Non-skippable validation** — Merged drafts must pass a fresh validator review. Fail = rework.
-2. **Page references are links, not decoration** — Must be clickable, must jump to the exact source line.
+2. **Page references are links, not decoration** — Link text is the heading name, clicks jump to that section, page numbers in parentheses.
 3. **Chinese + English bilingual annotation** — Key terms include original English on first occurrence.
 4. **Mandatory chunking for long documents** — Summarizing a 300-page textbook in one pass is forbidden.
 5. **Diagrams only when needed** — Include a visual only when it substantively clarifies a concept.
