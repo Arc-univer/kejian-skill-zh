@@ -25,7 +25,7 @@ The output is **exam-oriented**, not a generic chapter summary. It distills: cor
 |---------|---------|
 | **Heading-anchor links** | Every reference shows the heading name and links to it (`[CPU Time Formula](source.md#cpu-time-formula) (pp. 1468)`). Click → jump directly. Works in Obsidian, VS Code, GitHub, and Typora. |
 | **Automatic chunking** | Long documents are intelligently split by lecture/topic, read section-by-section (parallel when possible), then merged globally. |
-| **Independent validation** | After merging, a fresh validator checks coverage, link clickability, heading-anchor correctness, bilingual terms, and exam relevance. Fails → back to revision. |
+| **Independent validation** | After merging, a fresh validator checks coverage, link clickability, heading-anchor correctness, bilingual terms, and exam relevance. A separate format checker then scans every line for link syntax, bracket pairing, and symbol integrity. Fails → fix and re-check. |
 | **Bilingual terminology** | Primary language is Chinese; key technical terms are annotated with their original English names in parentheses (e.g., "指令集架构 (Instruction Set Architecture, ISA)"). |
 | **Math formula preservation** | Formulas use LaTeX syntax (`$...$` / `$$...$$`), rendered correctly in any math-capable Markdown viewer. |
 | **Multi-format input** | Markdown (preferred), plain text, PDF (direct reading or via Marker/Markitdown/Surya conversion). |
@@ -72,15 +72,15 @@ $$CPU\ Time = IC \times CPI \times T_c$$
 ## Pipeline: Controller → Readers → Validator
 
 ```
-┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+┌──────────┐     ┌──────────┐     ┌──────────┐      ┌──────────┐
 │  Receive  │───▶│  Global   │───▶│  Chunk    │───▶│  Section  │
-│  Input    │    │  Read+Map │    │ by Topic  │    │  Read     │
-└──────────┘    └──────────┘    └──────────┘    └─────┬─────┘
-                                                       │
-┌──────────┐    ┌──────────┐    ┌──────────┐          │
-│  Write    │◀───│  Validator│◀───│  Merge   │◀─────────┘
-│  Output   │    │  (fresh)  │    │  Draft   │
-└──────────┘    └──────────┘    └──────────┘
+│  Input    │    │  Read+Map │     │ by Topic  │     │  Read     │
+└──────────┘     └──────────┘     └──────────┘      └─────┬─────┘
+                                                          │
+┌──────────┐     ┌──────────┐      ┌──────────┐      ┌──────────┐          │
+│  Write    │◀───│  Format   │◀───│ Content   │◀───│  Merge   │◀─────────┘
+│  Output   │    │  Checker  │     │ Validator │     │  Draft   │
+└──────────┘     └──────────┘      └──────────┘      └──────────┘
 ```
 
 ### Key Roles
@@ -88,6 +88,7 @@ $$CPU\ Time = IC \times CPI \times T_c$$
 - **Controller** — performs a global read of the entire document, builds a section map, delegates to readers, merges draft, normalizes style, and reports results
 - **Section Reader** — one per independent lecture block or topic chunk; returns structured notes (key points, formulas, **heading anchors**, English terms); never writes the final document
 - **Validator** — a fresh-context reviewer that checks coverage, verifies every page link is clickable with correct heading anchors, audits bilingual terminology, and assesses exam utility. Returns `Pass` / `Pass with notes` / `Fail`
+- **Format Checker** — a fresh sub-agent (never reuses the validator); scans every line for link syntax, bracket pairing, anchor format, and symbol integrity. Failures are fixed one-by-one and re-checked until zero errors
 
 ---
 
@@ -119,7 +120,7 @@ git clone https://github.com/Arc-univer/kejian-skill-zh.git ~/.agent/skills/keji
 User: "Summarize 'Computer Systems Overview' — exam key points only"
       ↓
 Skill auto: global read → chunk → per-section extract (with heading anchors)
-            → merge → validate → write file
+            → merge → content validate → format check → write file
       ↓
 Output: Summary - Computer Systems Overview.md (every point links to source headings)
 ```
@@ -132,7 +133,7 @@ Output: Summary - Computer Systems Overview.md (every point links to source head
 ### Path 3: No Agent Environment
 
 1. Download [SKILL.md](SKILL.md)
-2. Feed the courseware + SKILL.md to a web-based AI (Claude / ChatGPT / Gemini)
+2. Feed the courseware + SKILL.md to a web-based AI (Claude / ChatGPT / GLM / DeepSeek)
 3. Receive a text summary (same structure, no heading-anchor navigation)
 
 ---
@@ -226,7 +227,7 @@ Yes. With Pandoc installed, tell the agent you want `.docx` output: `pandoc Summ
 <details>
 <summary><strong>Will summarizing a 300+ page textbook lose content?</strong></summary>
 
-No. The skill enforces mandatory chunking: long documents must be split by lecture/topic into independent sections, each read and extracted separately, then globally merged and validated. The validator checks that every section in the segment map has coverage in the final draft. A single missing section = fail.
+No. The skill enforces mandatory chunking: long documents must be split by lecture/topic into independent sections, each read and extracted separately, then globally merged and validated. The validator checks that every section in the segment map has coverage in the final draft. A single missing section = fail. After validation, a format checker scans every line for link syntax and symbol integrity, ensuring the output is free of formatting errors.
 
 </details>
 
@@ -239,7 +240,7 @@ No. The skill enforces mandatory chunking: long documents must be split by lectu
 | Page references often missing or inaccurate | Every knowledge point has a heading-name link + page reference, works in all viewers |
 | May produce vague prose summaries | Structured key-point output with priority tags + pitfalls |
 | English terminology often dropped | Bilingual terms are a mandatory deliverable |
-| Single conversation round | Multi-round validation until passing, then file write |
+| Single conversation round | Content validation + format check both pass before file write |
 
 </details>
 
@@ -248,10 +249,11 @@ No. The skill enforces mandatory chunking: long documents must be split by lectu
 ## Design Principles
 
 1. **Non-skippable validation** — Merged drafts must pass a fresh validator review. Fail = rework.
-2. **Page references are links, not decoration** — Link text is the heading name, clicks jump to that section, page numbers in parentheses.
-3. **Chinese + English bilingual annotation** — Key terms include original English on first occurrence.
-4. **Mandatory chunking for long documents** — Summarizing a 300-page textbook in one pass is forbidden.
-5. **Diagrams only when needed** — Include a visual only when it substantively clarifies a concept.
+2. **Content and format checked independently** — The validator checks correctness; the format checker checks syntactic integrity. Two concerns, two agents.
+3. **Page references are links, not decoration** — Link text is the heading name, clicks jump to that section, page numbers in parentheses.
+4. **Chinese + English bilingual annotation** — Key terms include original English on first occurrence.
+5. **Mandatory chunking for long documents** — Summarizing a 300-page textbook in one pass is forbidden.
+6. **Diagrams only when needed** — Include a visual only when it substantively clarifies a concept.
 
 ---
 
