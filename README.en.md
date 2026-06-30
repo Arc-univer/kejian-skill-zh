@@ -147,7 +147,6 @@ Output: Summary - Computer Systems Overview.md (every point links to source head
 | [Marker](https://github.com/VikParuchuri/marker) | PDF → Markdown | ⭐⭐⭐ Best | Slower |
 | [Markitdown](https://github.com/microsoft/markitdown) | Multi-format → Markdown | ⭐⭐ Good | Fast |
 | [Surya](https://github.com/VikParuchuri/surya) | General-purpose OCR | ⭐⭐ Good | Moderate |
-| [Pandoc](https://pandoc.org) | Format conversion | ⭐⭐ Good | Fast |
 
 > **Recommended combo**: Convert academic PDFs with Marker → summarize with this skill
 
